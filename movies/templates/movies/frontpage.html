@@ -1,0 +1,630 @@
+{% load static %}
+<html>
+<head>
+<style>
+body
+{
+background-color: black;
+background-position: fixed;
+background-size :100% 100%;
+background-repeat: no-repeat;
+margin-left : 100px;
+margin-right:50px;
+}
+#title
+{
+	text-align:center;
+	font-size:30px;
+	color:green;
+}
+.heading
+{
+	position:sticky;
+	z-index:1;
+	top:0px;
+	background-color:black;
+}
+.space
+{
+line-height: 60px;
+}
+.images
+{
+  position:absolute;
+  left:50px;
+  border-width:5px;
+  border-style:solid;
+  border-color:white;
+  border-radius: 4px;
+  padding: 5px;/* padding inside image places the image inside a box structure*/
+  width: 300px;
+  height: 300px;
+}
+.addfilm
+{
+height:50px;
+width:50px;
+position:absolute;
+right:110px;
+top:65px;
+cursor: pointer;
+}
+.genres
+{
+	float:left;
+	position:relative;
+	width: 400px;
+	height: 400px;
+	padding: 20px;
+	border-width: 0px;
+}
+.foretext
+{
+height:100%;
+width:100%;
+position:absolute;
+top:0px;
+left:0px;
+background-color:rgb(0,0,0,1);
+opacity:0;
+color:green;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.genres2
+{
+	float:left;
+	width: 400px;
+	height: 400px;
+	padding: 20px;
+	position: relative;
+	left: 230px;
+}
+.subtext
+{
+position:absolute;
+bottom:35px;
+left:120px;
+font-size:20px;
+color:white;
+}
+.logo
+{
+width: 100px;
+height: 100px;
+position:absolute;
+right:5px;
+top:5px;
+}
+.decoration_image
+{
+width:180px;
+height:230px;
+position:absolute;
+right:110px;
+top:60px;
+z-index:2;
+}
+.search_film
+{
+width:950px;
+height:50px;
+outline:none;
+position:absolute;
+left: 50px;
+padding:5px 20px;
+background-color:black;
+color:white;
+font-size:20px;
+font-weight:bold;
+border-radius:0px 20px 20px 0px;
+border-width:0px;
+}
+.formdetails
+{
+background-color:white;
+border-style: solid;
+border-color: black;
+border-width: 2px;
+width:300px;
+height:50px;
+border-radius:5px;
+padding:2px 5px 2px 5px;
+font-size:20px;
+font-weight:bold;
+}
+.formlabels
+{
+font-size:20px;
+font-weight:bold;
+color:red;
+}
+input[type="submit"]
+{
+		padding:5px 15px; 
+    background:green;
+    height: 40px;
+    width: 70px;
+    color: white; 
+    border:0 none;
+    cursor:pointer;
+    border-radius: 5px;
+}
+.searchbar
+{
+border-radius:20px;
+border-width:2px;
+border-style:solid;
+border-color:white;
+height:50px;
+width:1000px;
+position:relative;
+left: 200px;
+background-color:black;
+}
+.labelsearch
+{
+width:40px;
+height:40px;
+position:absolute;
+cursor: pointer;
+left:10px;
+top:5px;
+}
+.background_modal
+{
+display:none;
+z-index:1;
+background-color:gray;
+width:100%;
+height:150%;
+position:absolute;
+top:0px;
+left:0px;
+opacity:0.7;
+}
+.foreground_modal
+{
+display:none;
+padding: 20px 75px;
+opacity:1;
+background-image:url({% static 'images/filmy4.jpg'%});
+background-repeat: no-repeat;
+background-size :100% 100%;
+width:550px;
+height:550px;
+position:fixed;
+overflow:auto; /* states whether scroll bar will be allowed or not generally*/
+/*overflow generally works with block elements like div but not span 
+by default it is set to not clip the block and the content extends over the block area*/
+top:120px;
+left:410px;
+z-index:2; 
+border-width:5px;
+border-color:red;
+border-style:solid;
+border-radius:10px;
+}
+.label_details
+{
+font-size:20px;
+font-weight:bold;
+color:red;
+}
+.genre_details
+{
+font-size:15px;
+font-weight:bold;
+color:red;
+}
+textarea.summary
+{
+color:red;
+height:100px;
+width:430px;
+}
+br.special
+{
+line-height:88px;
+}
+.allmovies
+{
+	position: absolute;
+	top: 5px;
+	right: 300px;
+	height: 50px;
+	width: 70px;
+	color: white;
+	cursor: pointer;
+	background-color: green;
+	border-radius: 10px;
+	border-style: solid;
+	border-color: white;
+	border-width: 3px;
+}
+.allmovies:hover
+{
+	outline: none;
+	border-color: #9ecaed;
+  box-shadow: 0 0 15px #9ecaed;
+}
+a:link
+{
+	color: green;
+	text-decoration: none;
+}
+a:visited
+{
+	color: green;
+	text-decoration: none;
+}
+a:hover
+{
+	color: red;
+	text-decoration: none;
+}
+a:active
+{
+	color: green;
+	text-decoration: none;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+.submit1
+{
+	display: none;
+}
+</style>
+</head>
+<body>
+<div class="heading" id="heading01">
+<p id="title">Search Your Genre Specific Movies Here</p>
+<a href="{% url 'movies' %}"><button class="allmovies">All Movies</button></a>
+<img class="addfilm" src="{% static 'images/add2.jpg'%}" onclick="f()">
+<img class="logo" src="{%static 'images/blackreel.jpg'%}">
+<div class="searchbar">
+<form autocomplete="off" action="" method="post">
+{% csrf_token %}	
+<label for="search">
+<img class="labelsearch" src="{%static 'images/searchicon.png'%}">
+</label>
+<input class="search_film" type="text" id="search" name="search" placeholder="Search Movie Name">
+<input type="submit" class="submit1" name="submit1" value="search">
+</form>
+</div>
+<br class="space">
+</div>
+<div id="background_modal" class="background_modal"></div>
+<div id="foreground_modal" class="foreground_modal">
+<!-- So basically the thing with functions is that here onsubmit="......"
+whatever is written inside the double quotes will be carried on once the action takes place in 
+this case if it is clicked..since we need to return true or false we are returning it by
+"return validate()"
+*********its important to understand that onsubmit is nowhere related to ((true or false))returned by validate function.. ON SUBMITTING THE THING INSIDE QUOTES IS JUST EXECUTED
+IF WE RETURN FALSE THEN ACTION DOES NOT TAKES PLACE
+IF WE RETURN TRUE THEN ACTION TAKES PLACE AND WE GO TO ANOTHER PAGE
+-->
+<form autocomplete="off" onsubmit="return validate()" action="" method="post">
+{% csrf_token %}
+<img class="decoration_image" src="{%static 'images/decoration.jpg'%}">
+<br class="special">
+<br>
+<label for="film_name"><div class="label_details">Name Of Film :</div></label>
+<br>
+<input type="text" class ="formdetails" id="film_name" name="film_name" placeholder="Name Of The Film" onblur="check(this.id)">
+<br><br>
+<label for="date_of_release"><div class="label_details">Date Of Release :</div></label>
+<br>
+<input type="date" class="formdetails" id="date_of_release" name="date_of_release" placeholder="Date Of Release" onblur="check(this.id)">
+<br><br>
+<p class="formlabels">Choose Your Genre : </p>
+<input type="radio" id="mystery/thriller" name="genre" value="Mystery/Thriller">
+<label  for="mystery/thriller"><span class="genre_details">Mystery/thriller</span></label>
+<input type="radio" id="Romance" name="genre" value="Romance">
+<label for="Romance"><span class="genre_details">Romance</span></label>
+<input type="radio" id="Horror" name="genre" value="Horror">
+<label for="Horror"><span class="genre_details">Horror</span></label>
+<input type="radio" id="Comedy" name="genre" value="Comedy">
+<label for="Comedy"><span class="genre_details">Comedy</span></label>
+<input type="radio" id="Documentary" name="genre" value="Documentary">
+<label for="Documentary"><span class="genre_details">Documentary</span></label>
+<br><br>
+<label for="rating"><div class="label_details">Rating out of 5</div></label>
+<br>
+<textarea name="rating" id="rating" onblur="check(this.id)"></textarea>
+<br><br>
+<label for="summary"><div class="label_details">Summary</div></label>
+<br>
+<textarea name="summary" id="summary" class="summary" onblur="check(this.id)"></textarea>
+<br><br>
+<input type="submit" name="submit2" value="submit">
+</form>
+</div>
+<div class="genres" id="genres01" onmouseenter="enter('genres01')" onmouseleave="leave(this.id)">
+<img class="images" id="img1" src="{% static 'images/mystery.jpg'%}">
+<div class="foretext" id="foretext1">
+<a href="{% url 'genre_list' '1'%}"><h1>Thriller Movies</h1></a>
+</div>
+<br>
+<p class="subtext">Mystery/Thriller</p>
+</div>
+<div class="genres" id="genres02" onmouseenter="enter(this.id)" onmouseleave="leave(this.id)">
+<img class="images" id="img2" src="{%static 'images/romance2.jpg'%}">
+<div class="foretext" id="foretext2">
+<a href="{% url 'genre_list' '2'%}"><h1>Romantic Movies</h1></a>
+</div>
+<br>
+<p class="subtext">Romance</p>
+</div>
+<div class="genres" id="genres03" onmouseenter="enter(this.id)" onmouseleave="leave(this.id)">
+<img class="images" id="img3"src="{%static 'images/horror.jpg'%}">
+<div class="foretext" id="foretext3">
+<a href="{% url 'genre_list' '3'%}"><h1>Horror Movies</h1></a>
+</div>
+<br>
+<p class="subtext">Horror</p>
+</div>
+<div class="genres2" id="genres04" onmouseenter="enter(this.id)" onmouseleave="leave(this.id)">
+<img class="images" id="img4" src="{%static 'images/comedy.jpg'%}">
+<div class="foretext" id="foretext4">
+<a href="{% url 'genre_list' '4'%}"><h1>Comedy Movies</h1></a>
+</div>
+<br>
+<p class="subtext">Comedy</p>
+</div>
+<div class="genres2" id="genres05" onmouseenter="enter(this.id)" onmouseleave="leave(this.id)">
+<img class="images" id="img5" src="{%static 'images/documentary.jpg'%}">
+<div class="foretext" id="foretext5">
+<a href="{% url 'genre_list' '5'%}"><h1>Documentaries</h1></a>
+</div>
+<br>
+<p class="subtext">Documentary</p>
+</div>
+<script>
+{% if status %}
+alert("{{status}}")
+{% endif %}	
+var modal_background=document.getElementById("background_modal");
+var modal_foreground=document.getElementById("foreground_modal");
+function enter(id)
+{	
+var genre=document.getElementById(id);
+if(id=='genres01'||id=='genres02'||id=='genres03')
+genre.children[1].style.opacity="0.9";
+else
+genre.children[1].style.opacity="0.9";
+genre.style.boxShadow="0 0 30px #996515";
+}
+function leave(id)
+{
+var genre=document.getElementById(id);
+genre.children[1].style.opacity="0";
+genre.children[0].style.borderColor="white";
+genre.style.boxShadow="none";
+}
+function f()
+{
+	modal_background.style.display="block";
+	modal_foreground.style.display="block";
+}
+function isgenrechosen()
+{
+	var g1=document.getElementById('mystery/thriller');
+	var g2=document.getElementById('Romance');
+	var g3=document.getElementById('Horror');
+	var g4=document.getElementById('Comedy');
+	var g5=document.getElementById('Documentary');
+	if(g1.checked==false&&g2.checked==false&&g3.checked==false&&g4.checked==false
+		&&g5.checked==false)
+		return false;
+	return true;
+
+}
+function validate()
+{
+	var mn=document.getElementById('film_name').value;
+	var mr=document.getElementById('rating').value;
+	var md=document.getElementById('date_of_release').value;
+	var ms=document.getElementById('summary').value;
+	if(mn==""||mr==""||md==""||ms==""||isgenrechosen()==false)
+	{
+		alert("Please fill all the details of the form before submitting");
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+function isvalid(id)
+{
+	var el=document.getElementById(id).value;
+	if(isNaN(el))
+		return false;
+	else
+	{
+		var num=+el;
+		if(num>=6||num<0)
+			return false;
+		return true;
+	}
+}
+function check(id)
+{
+	var el=document.getElementById(id);
+	if(id=="film_name"||id=="date_of_release"||id=="summary")
+	{
+		if(el.value=="")
+		{
+			el.style.borderColor="red";
+			el.style.borderWidth="3px";
+			alert("This is a mandatory Field");
+		}
+		else
+		{
+			el.style.borderWidth="2px";
+			el.style.borderColor="black";
+		}
+
+	}
+	else
+	{
+		if(el.value=="")
+		{
+			el.style.borderColor="red";
+			el.style.borderWidth="3px";
+			alert("This is a mandatory Field");
+		}
+		else if(!isvalid(id))
+		{
+			el.style.borderWidth="3px";
+			el.style.borderColor="red";
+			alert("This is not an accepted value");
+			el.value="";
+		}
+		else
+		{
+			el.style.borderWidth="2px";
+			el.style.borderColor="black";
+		}
+	}
+}
+window.onclick = function(event) {
+  if (event.target == modal_background) {
+    modal_background.style.display = "none";
+	modal_foreground.style.display = "none";
+  }
+}
+function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  var fid;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
+}
+const arr=[];
+var x=0;
+{% for i in movie_names %}
+arr[x++]="{{i}}"
+{% endfor %}
+autocomplete(document.getElementById("search"), arr);
+</script>
+</body>
+</html>
